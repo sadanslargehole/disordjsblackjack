@@ -47,16 +47,18 @@ export function dealer_play(thecard: card, dealerHand: card[]): card[] {
 export function value(hand: card[]): number {
     let aces = new Array<card>();
     let total = 0;
-    for (let i = 0; i < hand.length; i++) {
-        const card = hand[i];
-        if (card.hidden) continue;
+    for (const card of hand) {
+        console.log(card.hidden);
+        if (card.hidden == true){
+            continue
+        }
         if (card.ace) {
-            aces!.push(card);
+            aces.push(card);
             continue;
         }
         total += card.value;
     }
-    if (aces!){
+    if (aces.length>=1){
         if(aces.length===1){
             if (total+11>21){
                 aces[0].value =1;
@@ -177,11 +179,14 @@ export function unhideHand(hand: card[]): void{
  * @returns the built embed already in JSON
  */
 export function createembed(player_hand: card[], dealer_hand: card[], state: number): APIEmbed{
+    console.log(dealer_hand[1].hidden);
+    
     let title: string;
     let color: number;
     let blackjack: string;
-    let description = `Player's hand: ${namethislater(player_hand)} (total ${value(player_hand)})\nDealer's hand: ${namethislater(dealer_hand)} (total ${value(dealer_hand)})`
     if (state !=4) unhideHand(dealer_hand);
+    console.log(dealer_hand[1].hidden);
+    let description = `Player's hand: ${namethislater(player_hand)} (total ${value(player_hand)})\nDealer's hand: ${namethislater(dealer_hand)} (total ${value(dealer_hand)})`
     switch (state) {
         case -1:
             title = 'You lose'
